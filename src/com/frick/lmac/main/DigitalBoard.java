@@ -43,6 +43,7 @@ public class DigitalBoard extends IOBoard {
 	@Override
 	// Method that receives the command request
 	public void rx(Command in) {
+		hasReceived = true;
 		inCommand = in;
 		char cmdType = inCommand.getCommandType();
 		// generate response

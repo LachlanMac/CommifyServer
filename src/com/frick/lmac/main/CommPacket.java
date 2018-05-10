@@ -10,6 +10,7 @@ public class CommPacket {
 	public static final String START = "f";
 	public static final String DELETE = "d";
 	public static final String split = "=";
+	public static final String HEART_BEAT = "h";
 	
 	
 	public static final char GET_CODE = 'g';
@@ -17,6 +18,7 @@ public class CommPacket {
 	public static final char ADD_CODE = 'a';
 	public static final char DELETE_CODE = 'd';
 	public static final char START_CODE = 'f';
+	public static final char HEART_BEAT_CODE = 'h';
 	
 	
 

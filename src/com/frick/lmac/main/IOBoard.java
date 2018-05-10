@@ -14,6 +14,7 @@ public abstract class IOBoard {
 	protected final static int ANALOG_BOARD_TYPE = 2;
 	protected final static int DIGITAL_BOARD_TYPE = 1;
 	protected int baudRate = 19200;
+	protected boolean hasReceived = false;
 
 	// DEFAULT CONSTRUCTOR
 	public IOBoard(int boardID) {
@@ -46,6 +47,11 @@ public abstract class IOBoard {
 	public int getBaudRate() {
 		return baudRate;
 	}
+
+	public boolean isCommunicating() {
+		return hasReceived;
+	}
+
 	// [[ SETTERS ]]
 	public void setBaudRate(int baudRate) {
 		this.baudRate = baudRate;

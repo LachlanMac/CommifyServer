@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 /*******************************************************************
  * CLASS CommifyServer AUTHOR : Lachlan R McCallum
@@ -46,15 +47,23 @@ public class CommifyServer extends Thread {
 		InetAddress sendAddress;
 		int sendPort;
 
+		try {
+			socket.setSoTimeout(5000);
+		} catch (SocketException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
 		while (running) {
 			// initilie new packets
 			inData = new byte[256];
 			outData = new byte[256];
 			inPacket = new DatagramPacket(inData, inData.length);
+
 			try {
+
 				// RECEIVE
 				socket.receive(inPacket);
-
 				// parse incoming data
 				// BOARD ID AND TYPE REQUEST?
 
@@ -62,13 +71,20 @@ public class CommifyServer extends Thread {
 				sendPort = inPacket.getPort();
 
 				// RESPOND
-
 				outPacket = handler.parseRequest(inPacket.getData(), sendPort, sendAddress);
 
-				socket.send(outPacket);
+				try {
+					socket.send(outPacket);
 
+				} catch (IOException e) {
+					// socket.close();
+					e.printStackTrace();
+				}
+			} catch (SocketTimeoutException e1) {
+				Feedback.networkLog("Socket Timeout");
+				cm.stopServices();
 			} catch (IOException e) {
-				socket.close();
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

@@ -28,6 +28,7 @@ public class AnalogBoard extends IOBoard {
 	private AnalogChannel[] channels;
 	private Command inCommand;
 	private String tx;
+	
 
 	// Constructor
 	public AnalogBoard(int boardID) {
@@ -50,6 +51,7 @@ public class AnalogBoard extends IOBoard {
 	@Override
 	// Method that receives the command request
 	public void rx(Command in) {
+		hasReceived = true;
 		inCommand = in;
 		char cmdType = inCommand.getCommandType();
 		// generate response

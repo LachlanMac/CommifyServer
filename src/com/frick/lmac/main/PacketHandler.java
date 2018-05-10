@@ -58,6 +58,9 @@ public class PacketHandler {
 		case CommPacket.START_CODE:
 			returnData = startService();
 			break;
+		case CommPacket.HEART_BEAT_CODE:
+			returnData = heartBeat();
+			break;
 
 		default:
 			Feedback.networkError("Unknown Packet Code");
@@ -112,6 +115,8 @@ public class PacketHandler {
 		String returnData;
 		if (b == null) {
 			returnData = new String(CommPacket.GET + CommPacket.FAILURE + "=error getting board data");
+		} else if (!b.isCommunicating()) {
+			returnData = new String(CommPacket.GET + CommPacket.FAILURE + "=board is not communicating");
 		} else {
 			returnData = CommPacket.GET + CommPacket.SUCCESS + "=" + new String(b.getPacketData());
 		}
@@ -126,6 +131,8 @@ public class PacketHandler {
 
 		if (b == null) {
 			returnData = CommPacket.SET + CommPacket.FAILURE + "=error setting board data";
+		} else if (!b.isCommunicating()) {
+			returnData = new String(CommPacket.SET + CommPacket.FAILURE + "=board is not communicating");
 		} else {
 
 			returnData = CommPacket.SET + CommPacket.SUCCESS + "=" + new String(b.setPacketData(setData));
@@ -154,6 +161,10 @@ public class PacketHandler {
 		manager.startServices();
 		return new String(CommPacket.START + "00=start").getBytes();
 
+	}
+
+	public byte[] heartBeat() {
+		return new String(CommPacket.HEART_BEAT + "00=heartbeat").getBytes();
 	}
 
 }
